@@ -69,11 +69,11 @@ main() {
         ;;
     esac
     
-    #local _url="${PIKA_RELEASE_ROOT}/dist/${_arch}/rustup-init${_ext}"
+    local _url="${PIKA_RELEASE_ROOT}/dist/${_arch}/pikaup-init${_ext}"
 
-    # local _dir
-    # _dir="$(ensure mktemp -d)"
-    # local _file="${_dir}/rustup-init${_ext}"
+    local _dir
+    _dir="$(ensure mktemp -d)"
+    local _file="${_dir}/pikaup-init${_ext}"
 
     local _ansi_escapes_are_valid=false
     if [ -t 2 ]; then
