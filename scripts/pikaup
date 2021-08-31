@@ -69,7 +69,7 @@ main() {
         ;;
     esac
     
-    local _url="${PIKA_RELEASE_ROOT}/dist/${_arch}/pikaup-init${_ext}"
+    local _url="${PIKA_RELEASE_ROOT}/${_arch}/install${_ext}"
 
     local _dir
     _dir="$(ensure mktemp -d)"
