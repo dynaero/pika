@@ -20,7 +20,7 @@ fi
 set -u
 
 # If PIKA_RELEASE_ROOT is unset or empty, default it.
-PIKA_RELEASE_ROOT="${PIKA_RELEASE_ROOT:-https://pika.sh}"
+PIKA_RELEASE_ROOT="${PIKA_RELEASE_ROOT:-https://raw.githubusercontent.com/dynaero/pika/main/scripts/install}"
 
 #XXX: If you change anything here, please make the same changes in setup_mode.rs
 usage() {
@@ -109,37 +109,35 @@ main() {
         printf '%s\n' 'info: downloading installer' 1>&2
     fi
 
-    # ensure mkdir -p "$_dir"
-    # ensure downloader "$_url" "$_file" "$_arch"
-    # ensure chmod u+x "$_file"
-    # if [ ! -x "$_file" ]; then
-    #     printf '%s\n' "Cannot execute $_file (likely because of mounting /tmp as noexec)." 1>&2
-    #     printf '%s\n' "Please copy the file to a location where you can execute binaries and run ./rustup-init${_ext}." 1>&2
-    #     exit 1
-    # fi
+    ensure mkdir -p "$_dir"
+    ensure downloader "$_url" "$_file" "$_arch"
+    ensure chmod u+x "$_file"
+    if [ ! -x "$_file" ]; then
+        printf '%s\n' "Cannot execute $_file (likely because of mounting /tmp as noexec)." 1>&2
+        printf '%s\n' "Please copy the file to a location where you can execute binaries and run ./pikaup-init${_ext}." 1>&2
+        exit 1
+    fi
 
-    # if [ "$need_tty" = "yes" ]; then
-    #     # The installer is going to want to ask for confirmation by
-    #     # reading stdin.  This script was piped into `sh` though and
-    #     # doesn't have stdin to pass to its children. Instead we're going
-    #     # to explicitly connect /dev/tty to the installer's stdin.
-    #     if [ ! -t 1 ]; then
-    #         err "Unable to run interactively. Run with -y to accept defaults, --help for additional options"
-    #     fi
+    if [ "$need_tty" = "yes" ]; then
+        # The installer is going to want to ask for confirmation by
+        # reading stdin.  This script was piped into `sh` though and
+        # doesn't have stdin to pass to its children. Instead we're going
+        # to explicitly connect /dev/tty to the installer's stdin.
+        if [ ! -t 1 ]; then
+            err "Unable to run interactively. Run with -y to accept defaults, --help for additional options"
+        fi
 
-    #     ignore "$_file" "$@" < /dev/tty
-    # else
-    #     ignore "$_file" "$@"
-    # fi
+        ignore "$_file" "$@" < /dev/tty
+    else
+        ignore "$_file" "$@"
+    fi
 
-    # local _retval=$?
+    local _retval=$?
 
-    # ignore rm "$_file"
-    # ignore rmdir "$_dir"
+    ignore rm "$_file"
+    ignore rmdir "$_dir"
 
-    # return "$_retval"
-
-    err "fatal: pikaup"
+    return "$_retval"
 }
 
 check_proc() {
