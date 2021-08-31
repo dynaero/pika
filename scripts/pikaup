@@ -69,24 +69,22 @@ main() {
         ;;
     esac
     
-    
-
     #local _url="${PIKA_RELEASE_ROOT}/dist/${_arch}/rustup-init${_ext}"
 
     # local _dir
     # _dir="$(ensure mktemp -d)"
     # local _file="${_dir}/rustup-init${_ext}"
 
-    # local _ansi_escapes_are_valid=false
-    # if [ -t 2 ]; then
-    #     if [ "${TERM+set}" = 'set' ]; then
-    #         case "$TERM" in
-    #             xterm*|rxvt*|urxvt*|linux*|vt*)
-    #                 _ansi_escapes_are_valid=true
-    #             ;;
-    #         esac
-    #     fi
-    # fi
+    local _ansi_escapes_are_valid=false
+    if [ -t 2 ]; then
+        if [ "${TERM+set}" = 'set' ]; then
+            case "$TERM" in
+                xterm*|rxvt*|urxvt*|linux*|vt*)
+                _ansi_escapes_are_valid=true
+                ;;
+            esac
+        fi
+    fi
     
     # check if we have to use /dev/tty to prompt the user
     local need_tty=yes
